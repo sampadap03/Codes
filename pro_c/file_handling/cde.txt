@@ -1,0 +1,2 @@
+Hello!! This is home assignment 6
+It is the program to copy paste file content from file abc.txt to cde.txt!!
