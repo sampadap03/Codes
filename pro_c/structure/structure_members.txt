@@ -1,0 +1,10 @@
+STRUCTURES
+
+student: rollno, marks, name, dob
+bikes:  name, brand, cc, price
+bank customer:  accno, bank name, name, balance
+employee: eid, name, salary
+laptop:  model name, brand, processor, price
+books: title, publisher, price, author
+doctor: name, specialization, yeas of experience
+Dmart items: id, name, expiry, price
