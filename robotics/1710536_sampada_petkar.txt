@@ -1,0 +1,253 @@
+/** Program to insert delete and print Node
+ *
+ * By: Sampada petkar
+ * TRF level 2 group 2
+ * Date:19-07-2018
+ *
+ */
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node *newNode(int item)
+{
+    struct Node *temp =  (struct Node *)malloc(sizeof(struct Node));
+    temp->data = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct Node* insert(struct Node* node, int k);
+struct Node * minValueNode(struct Node* node);
+struct Node* deleteNode(struct Node* root, int k);
+struct Node * insertNode(struct Node *p2, int ins, int d2);
+int inorder(struct Node *p)
+{
+    if(p==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+       inorder(p->left);
+       printf("%d  ",p->data);
+       inorder(p->right);
+    }
+}
+int preorder(struct Node *p)
+{
+    if(p==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        printf("%d  ",p->data);
+        preorder(p->left);
+        preorder(p->right);
+    }
+}
+int postorder(struct Node *p)
+{
+    if(p==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        postorder(p->left);
+        postorder(p->right);
+        printf("%d  ",p->data);
+    }
+}
+void printNode(struct Node *p)
+{
+    fflush(stdin);
+    printf("\nPlease enter in which type you have to print tree: \nI: inorder \nR: preorder \nO: postorder\n");
+
+    char c1;
+    scanf("%c",&c1);
+    if(c1=='I')
+    {
+        printf("Checking links by INORDER method \n");
+        inorder(p);
+        printf("\n\n");
+    }
+
+    else if(c1=='R')
+    {
+        printf("Checking links by PREORDER method \n");
+        preorder(p);
+        printf("\n\n");
+    }
+
+    else if(c1=='O')
+    {
+        printf("Checking links by POSTORDER method \n");
+        postorder(p);
+        printf("\n\n");
+    }
+}
+int treesearch(struct Node *n1, int search)
+{
+    struct Node *found1 = (struct Node *)malloc(sizeof(struct Node));
+    //printf("%d is value at %d\n", n1->data, n1);
+    if( n1 == NULL || search == n1->data)
+    {
+        //printf("found");
+        return found1;
+    }
+     found1 = n1;
+    if( search < n1-> data)
+        return treesearch(n1->left, search);
+    else
+        return treesearch(n1->right, search);
+
+}
+int main()
+{
+    struct Node *n1, *n2, *n3, *n4, *n5, *n7, *n6, *p1, *q;
+    n1 = (struct Node *) malloc(sizeof(struct Node));
+    n2 = (struct Node *) malloc(sizeof(struct Node));
+    n3 = (struct Node *) malloc(sizeof(struct Node));
+    n4 = (struct Node *) malloc(sizeof(struct Node));
+    n5 = (struct Node *) malloc(sizeof(struct Node));
+    n6 = (struct Node *) malloc(sizeof(struct Node));
+    n7 = (struct Node *) malloc(sizeof(struct Node));
+    p1 = (struct Node *) malloc(sizeof(struct Node));
+    q = (struct Node *) malloc(sizeof(struct Node));
+    n1->data =8;
+    n2->data =3;
+    n3->data =10;
+    n4->data =6;
+    n5->data =14;
+    n6->data =4;
+    n7->data =7;
+
+    n1->left = n2;
+    n1->right = n3;
+    n2->left = n4;
+    n2->right = NULL;
+    n3->left = NULL;
+    n3->right = n5;
+    n4->left = n6;
+    n4-> right = n7;
+    n5->left = NULL;
+    n5->right = NULL;
+    n6->left = NULL;
+    n6->right = NULL;
+    n7->left = NULL;
+    n7->right = NULL;
+    char c;
+    int d, d1, d2;
+    printf("Do you want to insert a node/ delete a node/ print the tree\nType: \ni: insertion\nd: delete \np: print\n\n");
+    scanf("%c",&c);
+    if(c=='i')
+    {
+        printf("\nEnter number to insert:   ");
+        scanf("%d, &d1");
+        printf("where to insert:  ");
+        scanf("%d", &d2);
+      p1 = insertNode(n1, d1, d2);
+        inorder(p1);
+    }
+
+
+    if(c=='d')
+    {
+        printf("\nEnter number:  ");
+        scanf("%d", &d);
+       q = deleteNode(n1, d);
+        printNode(q);
+
+    }
+
+    if(c=='p')
+        printNode(n1);
+    return 0;
+}
+
+struct Node* insert(struct Node* node, int k)
+{
+    if (node == NULL) return newNode(k);
+    if (k< node->data)
+        node->left  = insert(node->left, k);
+    else
+        node->right = insert(node->right, k);
+    return node;
+}
+
+struct Node * minValueNode(struct Node* node)
+{
+    struct Node* current = node;
+    while (current->left != NULL)
+        current = current->left;
+
+    return current;
+}
+
+struct Node* deleteNode(struct Node* root, int k)
+{
+    if (root == NULL) return root;
+    if (k < root->data)
+        root->left = deleteNode(root->left, k);
+        
+    else if (k > root->data)
+        root->right = deleteNode(root->right, k);
+    else
+    {
+        // node with only one child or no child
+        if (root->left == NULL)
+        {
+            struct Node *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            struct Node *temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        struct Node* temp = minValueNode(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+
+struct Node * insertNode(struct Node *p2, int ins, int d2)
+{
+    struct Node *p3 = (struct Node *) malloc(sizeof(struct Node));
+    struct Node *temp = (struct Node *) malloc(sizeof(struct Node));
+    p3 = treesearch(p2, d2);
+    int st;
+    printf("\n Enter R to insert Right, L to left: ");
+    char c2;
+    scanf("%c, &c2");
+    if(c2 == 'L')
+    {
+       temp = p3->left;
+       st = p3->left->data;
+
+       p3->left -> data = ins;
+       p3->left->left = temp;
+        p3->left->left->data = st;
+    }
+    if(c2 == 'R')
+    {
+       temp = p3->right;
+       st = p3->right->data;
+
+       p3->right -> data = ins;
+       p3->right->right = temp;
+        p3->right->right->data = st;
+    }
+}
